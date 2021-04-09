@@ -44,7 +44,7 @@ def get_activity_report_string():
 
     for a in strava_activities:
         activities += 1
-        activity_time_seconds += a["elapsed_time"]
+        activity_time_seconds += a["moving_time"]
 
         # https://developers.strava.com/docs/reference/#api-models-ActivityType
         if a["type"] in ["Hike", "Walk", "Snowshoe"]:
@@ -93,10 +93,12 @@ def generate_weeknote(weeknote_path):
     activity_report = get_activity_report_string()
     readings = get_readings_string()
 
-    WEEKNOTE_TEMPLATE.format(
+    note = WEEKNOTE_TEMPLATE.format(
         week=WEEK,
         today_str=TODAY.strftime("%Y-%m-%d"),
         year=YEAR,
         readings=readings,
         activity_report=activity_report,
     )
+
+    weeknote_path.write_text(note)

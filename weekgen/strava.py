@@ -2,7 +2,7 @@
 # Based https://raw.githubusercontent.com/honzajavorek/honzajavorek.cz/b91bcadf4dba7e83a37d431b5d78103c4b7a267c/strava.py
 # based on https://medium.com/swlh/using-python-to-connect-to-stravas-api-and-analyse-your-activities-dummies-guide-5f49727aac86
 
-from datetime import timedelta, datetime, timezone
+from datetime import timedelta, datetime
 from getpass import getpass
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 import os
@@ -68,7 +68,9 @@ def get_access_token_from_strava(client_id, client_secret):
             self.send_header("Content-type", "text/html")
             self.end_headers()
             self.wfile.write(
-                "<html><body>All OK, go back to console</body></html>".encode("utf-8")
+                "<html><body>All OK, go back to console. <script>window.close('','_parent','');</script></body></html>".encode(
+                    "utf-8"
+                )
             )
 
         def store_tokens(self, oauth_code):

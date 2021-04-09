@@ -42,16 +42,21 @@ def get_activity_report_string():
     activities = 0
     activity_time_seconds = 0
 
+    max_speed_mps = 0.0
+
     for a in strava_activities:
         activities += 1
         activity_time_seconds += a["moving_time"]
+
+        if a["max_speed"] > max_speed_mps:
+            max_speed_mps = a["max_speed"]
 
         # https://developers.strava.com/docs/reference/#api-models-ActivityType
         if a["type"] in ["Hike", "Walk", "Snowshoe"]:
             walks += 1
             walked_meters += a["distance"]
 
-        elif ["type"] in ["Ride", "VirtualRide"]:
+        elif a["type"] in ["Ride", "VirtualRide"]:
             rides += 1
             rode_meters += a["distance"]
 
@@ -61,23 +66,23 @@ def get_activity_report_string():
 
     acts = []
     if walks > 0:
-        acts.append(f"walked {round(walked_meters/1000)}km")
+        acts.append(f"walked {round(walked_meters/1000)} km")
     if runs > 0:
-        acts.append(f"ran {round(ran_meters/1000)}km")
+        acts.append(f"ran {round(ran_meters/1000)} km")
     if rides > 0:
-        acts.append(f"rode {round(rode_meters/1000)}km")
+        acts.append(f"rode {round(rode_meters/1000)} km")
 
     sentence = "I relaxed in the past week. "
     if len(acts) == 1:
-        sentence = f"I {acts[0]}. "
+        sentence = f"I've {acts[0]}. "
 
     elif len(acts) == 2:
-        sentence = f"I {acts.join(' and ')}. "
+        sentence = f"I've {' and '.join(acts)}. "
 
     elif len(acts) > 2:
-        sentence = f"I {acts[:-1].join(', ')} and {acts[-1]}. "
+        sentence = f"I've {', '.join(acts[:-1])} and {acts[-1]}. "
 
-    sentence += f"I moved for {round(activity_time_seconds/60/60, 1)} hours during {activities} activities."
+    sentence += f"I've been active for {round(activity_time_seconds/60/60, 1)} hours during {activities} activities. This week's max speed was {round(max_speed_mps*3.6, 1)} km/h."
 
     return sentence
 

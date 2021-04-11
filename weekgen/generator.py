@@ -28,7 +28,7 @@ WEEK = TODAY.strftime("%W")
 
 
 def get_activity_report_string():
-    strava_activities = get_activities(since=datetime.now() - timedelta(days=7))
+    strava_activities = get_activities(since=datetime.now() - timedelta(days=6))
 
     walks = 0
     walked_meters = 0.0

@@ -3,8 +3,7 @@ from datetime import timedelta, datetime, date
 from .pocket import get_pocket_recommendations
 from .strava import get_activities
 
-WEEKNOTE_TEMPLATE = """
----
+WEEKNOTE_TEMPLATE = """---
 title: "Notes for week {week} of {year}"
 date: "{today_str}"
 lastmod: "{today_str}"

@@ -5,7 +5,7 @@ from .strava import get_activities
 
 WEEKNOTE_TEMPLATE = """
 ---
-title: "Notes for Week {week}"
+title: "Notes for week {week} of {year}"
 date: "{today_str}"
 lastmod: "{today_str}"
 draft: false
@@ -28,7 +28,7 @@ WEEK = TODAY.strftime("%W")
 
 
 def get_activity_report_string():
-    strava_activities = get_activities(since=datetime.now() - timedelta(days=6))
+    strava_activities = get_activities(since=datetime.now() - timedelta(days=7))
 
     walks = 0
     walked_meters = 0.0

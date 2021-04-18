@@ -62,7 +62,7 @@ def get_access_token_from_strava(client_id, client_secret):
             url_params = parse_qs(urlparse(self.path).query)
             code = url_params["code"][0]
 
-            self.store_tokens(code)
+            self.exchange_code(code)
 
             self.send_response(200)
             self.send_header("Content-type", "text/html")
@@ -73,7 +73,7 @@ def get_access_token_from_strava(client_id, client_secret):
                 )
             )
 
-        def store_tokens(self, oauth_code):
+        def exchange_code(self, oauth_code):
             response = requests.post(
                 url="https://www.strava.com/oauth/token",
                 data={

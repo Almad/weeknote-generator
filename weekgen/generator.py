@@ -8,7 +8,7 @@ title: "Notes for week {week} of {year}"
 date: "{today_str}"
 lastmod: "{today_str}"
 draft: false
-tags: ["weekly-notes"]
+tags: ["Weekly Notes"]
 summary: "Random notes for week {week} of {year}"
 ---
 

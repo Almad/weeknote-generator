@@ -10,7 +10,7 @@ If run between Monday and Friday, it acts as if it's last Sunday.
 
 ## Runtime Requirements
 
-* Correct username for Pockt set in `pocket.py`
+* Correct username for Pocket set in `pocket.py`
 * Register your own API application [in Strava API page](https://www.strava.com/settings/api)
     * `Category` is `Data importer`
     * `Authorization Callback Domain` is `localhost`

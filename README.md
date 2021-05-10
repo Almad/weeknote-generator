@@ -6,6 +6,8 @@ This package is used to generate [weekly notes on Almad's Changelog](https://alm
 * Scrape [Pocket](https://getpocket.com/) for recommended articles
 * Generate nice [CommonMark](https://commonmark.org/) skeleton for Hugo blogpost
 
+If run between Monday and Friday, it acts as if it's last Sunday. 
+
 ## Runtime Requirements
 
 * Correct username for Pockt set in `pocket.py`

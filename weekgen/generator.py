@@ -21,10 +21,6 @@ summary: "Random notes for week {week} of {year}"
 {readings}
 """
 
-TODAY = date.today()
-YEAR = TODAY.strftime("%Y")
-WEEK = TODAY.strftime("%W")
-
 
 def get_activity_report_string():
     strava_activities = get_activities(since=datetime.now() - timedelta(days=7))
@@ -93,13 +89,16 @@ def get_readings_string():
     )
 
 
-def generate_weeknote(weeknote_path):
+def generate_weeknote(weeknote_path, today):
     activity_report = get_activity_report_string()
     readings = get_readings_string()
 
+    YEAR = today.strftime("%Y")
+    WEEK = today.strftime("%W")
+
     note = WEEKNOTE_TEMPLATE.format(
         week=WEEK,
-        today_str=TODAY.strftime("%Y-%m-%d"),
+        today_str=today.strftime("%Y-%m-%d"),
         year=YEAR,
         readings=readings,
         activity_report=activity_report,

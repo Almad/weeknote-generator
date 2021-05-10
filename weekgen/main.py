@@ -1,15 +1,20 @@
-from datetime import date
+from datetime import date, timedelta
 import os, os.path
 from pathlib import Path
 
 from .generator import generate_weeknote
 
-year = date.today().strftime("%Y")
-week = date.today().strftime("%W")
-
 
 def generate(argv=None):
     """Main command line entry point"""
+    # If we are slacking, assume we are making notes for last week
+    today = date.today()
+    if today.isoweekday() < 5:
+        today = date.today() - timedelta(days=today.isoweekday())
+
+    year = today.strftime("%Y")
+    week = today.strftime("%W")
+
     weeknote_dir = Path(f"content/notes/{year}")
     weeknote_name = f"week-{week}.md"
 
@@ -23,4 +28,4 @@ def generate(argv=None):
             f"Default post directory {weeknote_dir} doesn't exist, the weekly note will be generated in {weeknote_path}"
         )
 
-    generate_weeknote(weeknote_path)
+    generate_weeknote(weeknote_path, today=today)

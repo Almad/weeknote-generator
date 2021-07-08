@@ -6,7 +6,7 @@ from pocket_recommendations import parse
 POCKET_USERNAME = "Almad"
 
 
-def get_pocket_recommendations(recommended_days=6):
+def get_pocket_recommendations(today, recommended_days=6):
     """
     Return recommended articles for the last reported_days.
     I am using 6 days instead of 7 as I am running this on Sunday evening,
@@ -18,10 +18,10 @@ def get_pocket_recommendations(recommended_days=6):
     with urlopen(f"https://www.getpocket.com/@{POCKET_USERNAME}") as res:
         html = res.read()
 
-    items = parse(html, today=date.today())
+    items = parse(html, today=today)
     news = filter(
         lambda i: i["pocket_recommended_at"]
-        >= (date.today() - timedelta(days=recommended_days)),
+        >= (today - timedelta(days=recommended_days)),
         items,
     )
 

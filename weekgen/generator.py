@@ -22,8 +22,11 @@ summary: "Random notes for week {week} of {year}"
 """
 
 
-def get_activity_report_string():
-    strava_activities = get_activities(since=datetime.now() - timedelta(days=7))
+def get_activity_report_string(today):
+    today_eod = datetime(
+        today.year, today.month, today.day, hour=23, minute=59, second=59
+    )
+    strava_activities = get_activities(since=today_eod - timedelta(days=7))
 
     walks = 0
     walked_meters = 0.0
@@ -34,30 +37,39 @@ def get_activity_report_string():
     rides = 0
     rode_meters = 0.0
 
+    swims = 0
+    swimmed_meters = 0.0
+
     activities = 0
     activity_time_seconds = 0
 
     max_speed_mps = 0.0
 
     for a in strava_activities:
-        activities += 1
-        activity_time_seconds += a["moving_time"]
+        activity_date = datetime.fromisoformat(a["start_date"][:~0])
+        if activity_date <= today_eod:
+            activities += 1
+            activity_time_seconds += a["moving_time"]
 
-        if a["max_speed"] > max_speed_mps:
-            max_speed_mps = a["max_speed"]
+            if a["max_speed"] > max_speed_mps:
+                max_speed_mps = a["max_speed"]
 
-        # https://developers.strava.com/docs/reference/#api-models-ActivityType
-        if a["type"] in ["Hike", "Walk", "Snowshoe"]:
-            walks += 1
-            walked_meters += a["distance"]
+            # https://developers.strava.com/docs/reference/#api-models-ActivityType
+            if a["type"] in ["Hike", "Walk", "Snowshoe"]:
+                walks += 1
+                walked_meters += a["distance"]
 
-        elif a["type"] in ["Ride", "VirtualRide"]:
-            rides += 1
-            rode_meters += a["distance"]
+            elif a["type"] in ["Ride", "VirtualRide"]:
+                rides += 1
+                rode_meters += a["distance"]
 
-        elif ["type"] in ["Run", "VirtualRun"]:
-            runs += 1
-            ran_meters += a["distance"]
+            elif a["type"] in ["Run", "VirtualRun"]:
+                runs += 1
+                ran_meters += a["distance"]
+
+            elif a["type"] in ["Swim"]:
+                swims += 1
+                swimmed_meters += a["distance"]
 
     acts = []
     if walks > 0:
@@ -66,6 +78,8 @@ def get_activity_report_string():
         acts.append(f"ran {round(ran_meters/1000)} km")
     if rides > 0:
         acts.append(f"rode {round(rode_meters/1000)} km")
+    if swims > 0:
+        acts.append(f"swam {round(swimmed_meters)} m")
 
     sentence = "I relaxed in the past week. "
     if len(acts) == 1:
@@ -82,16 +96,16 @@ def get_activity_report_string():
     return sentence
 
 
-def get_readings_string():
-    recommended_articles = get_pocket_recommendations()
+def get_readings_string(today):
+    recommended_articles = get_pocket_recommendations(today=today)
     return "\n".join(
         "* [{title}]({url}): {pocket_comment}".format(**r) for r in recommended_articles
     )
 
 
 def generate_weeknote(weeknote_path, today):
-    activity_report = get_activity_report_string()
-    readings = get_readings_string()
+    activity_report = get_activity_report_string(today=today)
+    readings = get_readings_string(today=today)
 
     YEAR = today.strftime("%Y")
     WEEK = today.strftime("%W")

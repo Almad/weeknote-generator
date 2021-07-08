@@ -31,7 +31,7 @@ Alternatively just
 
 * `pip install .`
 
-You can then use `generate-weeknotes` command.
+You can then use `generate-weeknotes` command. If you want to generate weeknotes retrospectively, you can use `WEEK=week_number` environment variable. 
 
 If you have installed this inside a virtual environment and want to use it outside of it, the easiest way is to just add an alias into your `~/.zshrc`
 

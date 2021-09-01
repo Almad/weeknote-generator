@@ -44,6 +44,7 @@ def get_activity_report_string(today):
     activity_time_seconds = 0
 
     max_speed_mps = 0.0
+    total_elevation_gain = 0.0
 
     for a in strava_activities:
         activity_date = datetime.fromisoformat(a["start_date"][:~0])
@@ -58,18 +59,22 @@ def get_activity_report_string(today):
             if a["type"] in ["Hike", "Walk", "Snowshoe"]:
                 walks += 1
                 walked_meters += a["distance"]
+                total_elevation_gain += a["total_elevation_gain"]
 
             elif a["type"] in ["Ride", "VirtualRide"]:
                 rides += 1
                 rode_meters += a["distance"]
+                total_elevation_gain += a["total_elevation_gain"]
 
             elif a["type"] in ["Run", "VirtualRun"]:
                 runs += 1
                 ran_meters += a["distance"]
+                total_elevation_gain += a["total_elevation_gain"]
 
             elif a["type"] in ["Swim"]:
                 swims += 1
                 swimmed_meters += a["distance"]
+                total_elevation_gain += a["total_elevation_gain"]
 
     acts = []
     if walks > 0:
@@ -91,7 +96,7 @@ def get_activity_report_string(today):
     elif len(acts) > 2:
         sentence = f"I've {', '.join(acts[:-1])} and {acts[-1]}. "
 
-    sentence += f"I've been active for {round(activity_time_seconds/60/60, 1)} hours during {activities} activities. This week's max speed was {round(max_speed_mps*3.6, 1)} km/h."
+    sentence += f"I've been active for {round(activity_time_seconds/60/60, 1)} hours during {activities} activities. This week's max speed was {round(max_speed_mps*3.6, 1)} km/h and I conquered {int(round(total_elevation_gain, 0))} elevation meters."
 
     return sentence
 

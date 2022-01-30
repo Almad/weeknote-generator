@@ -22,7 +22,7 @@ def generate(argv=None):
     year = today.strftime("%Y")
     week = today.strftime("%W")
 
-    weeknote_dir = Path(f"content/notes/{year}")
+    weeknote_dir = Path(f"content/weekly-notes/{year}")
     weeknote_name = f"week-{week}.md"
 
     if not weeknote_dir.exists():
